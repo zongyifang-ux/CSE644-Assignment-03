@@ -4,4 +4,4 @@ metadata:
   name: python-web-config
   namespace: gary-cse644
 data:
-  APP_MESSAGE: "Gary Fang CSE644 Assignment 03 - GitOps v1"
+  APP_MESSAGE: "Gary Fang CSE644 Assignment 03 - GitOps v2"
