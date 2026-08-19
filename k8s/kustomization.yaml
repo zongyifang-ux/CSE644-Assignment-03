@@ -4,5 +4,5 @@ resources:
 - python-web.yaml
 - nginx.yaml
 - haproxy.yaml
-- ../monitoring/prometheus.yaml
-- ../monitoring/grafana.yaml
+- prometheus.yaml
+- grafana.yaml
