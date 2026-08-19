@@ -1,0 +1,8 @@
+resources:
+- namespace.yaml
+- configmap.yaml
+- python-web.yaml
+- nginx.yaml
+- haproxy.yaml
+- ../monitoring/prometheus.yaml
+- ../monitoring/grafana.yaml

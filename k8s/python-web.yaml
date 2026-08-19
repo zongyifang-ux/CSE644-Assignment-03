@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-web
+  namespace: gary-cse644
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-web
+  template:
+    metadata:
+      labels:
+        app: python-web
+    spec:
+      containers:
+      - name: python-web
+        image: garyfang1234/gary-python-web:a03-v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8888
+          name: http
+        envFrom:
+        - configMapRef:
+            name: python-web-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 10
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-web
+  namespace: gary-cse644
+  labels:
+    app: python-web
+spec:
+  selector:
+    app: python-web
+  ports:
+  - name: http
+    port: 8888
+    targetPort: 8888
+  type: ClusterIP

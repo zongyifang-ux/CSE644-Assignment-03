@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gary-nginx
+  namespace: gary-cse644
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gary-nginx
+  template:
+    metadata:
+      labels:
+        app: gary-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: garyfang1234/gary-custom-nginx:v1
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gary-nginx
+  namespace: gary-cse644
+spec:
+  selector:
+    app: gary-nginx
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-config
+  namespace: gary-cse644
+data:
+  haproxy.cfg: |
+    global
+      daemon
+      maxconn 256
+    defaults
+      mode http
+      timeout connect 5s
+      timeout client 30s
+      timeout server 30s
+    frontend http_front
+      bind *:8080
+      default_backend nginx_backend
+    backend nginx_backend
+      server nginx gary-nginx.gary-cse644.svc.cluster.local:80 check
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-nginx
+  namespace: gary-cse644
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-nginx
+  template:
+    metadata:
+      labels:
+        app: haproxy-nginx
+    spec:
+      containers:
+      - name: haproxy
+        image: haproxy:3.0-alpine
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config
+          mountPath: /usr/local/etc/haproxy/haproxy.cfg
+          subPath: haproxy.cfg
+      volumes:
+      - name: config
+        configMap:
+          name: haproxy-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: haproxy-nginx
+  namespace: gary-cse644
+spec:
+  selector:
+    app: haproxy-nginx
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: NodePort
