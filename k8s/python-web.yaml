@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: python-web
-        image: garyfang1234/gary-python-web:a03-v1
+        image: nginx:THIS-TAG-DOES-NOT-EXIST
         imagePullPolicy: Always
         ports:
         - containerPort: 8888
